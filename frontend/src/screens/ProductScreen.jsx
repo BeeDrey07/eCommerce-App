@@ -11,7 +11,7 @@ import {
   Button,
   Card,
 } from "react-bootstrap";
-import { UseDispatch, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import Rating from "../components/Rating";
 import Loader from "../components/Loader.jsx";
 import Message from "../components/Message.jsx";
