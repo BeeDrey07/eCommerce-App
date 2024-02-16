@@ -40,7 +40,7 @@ const OrderScreen = () => {
         paypalDispatch({
           type: "resetOptions",
           value: {
-            "client-id": paypal.clientId,
+            "clientId": paypal.clientId,
             currency: "USD",
           },
         });
@@ -59,7 +59,7 @@ const OrderScreen = () => {
       try {
         await payOrder({ orderId, details });
         refetch();
-        toast.success("Order is paid");
+        toast.success("Payment Successful");
       } catch (err) {
         toast.error(err?.data?.message || err.error);
       }
@@ -208,12 +208,12 @@ const OrderScreen = () => {
                     <Loader />
                   ) : (
                     <div>
-                      <Button
+                      {/* <Button
                         style={{ marginBottom: "10px" }}
                         onClick={onApproveTest}
                       >
                         Test Pay Order
-                      </Button>
+                      </Button> */}
 
                       <div>
                         <PayPalButtons

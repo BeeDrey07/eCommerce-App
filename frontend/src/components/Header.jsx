@@ -1,13 +1,14 @@
-import { useNavigate } from "react-router-dom";
 import { Navbar, Nav, Container, NavDropdown, Badge } from "react-bootstrap";
 import { FaShoppingCart, FaUser } from "react-icons/fa";
 import { LinkContainer } from "react-router-bootstrap";
 import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import { useLogoutMutation } from "../slices/usersApiSlice";
 import { logout } from "../slices/authSlice";
 
 const Header = () => {
   const { cartItems } = useSelector((state) => state.cart);
+
   const { userInfo } = useSelector((state) => state.auth);
 
   const dispatch = useDispatch();
@@ -20,8 +21,8 @@ const Header = () => {
       await logoutApiCall().unwrap();
       dispatch(logout());
       navigate("/login");
-    } catch (error) {
-      console.log(error);
+    } catch (err) {
+      console.error(err);
     }
   };
 
@@ -70,4 +71,5 @@ const Header = () => {
     </header>
   );
 };
+
 export default Header;
