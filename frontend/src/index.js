@@ -26,7 +26,7 @@ import store from "./store";
 import { Provider } from "react-redux";
 import { PayPalScriptProvider } from "@paypal/react-paypal-js";
 import ProfileScreen from "./screens/ProfileScreen";
-import OrderListScreen from "./screens/admins/OrderListScreen";
+import OrderListScreen from "./screens/admin/OrderListScreen";
 
 
 const router = createBrowserRouter(
