@@ -7,10 +7,10 @@ import { toast } from "react-toastify";
 import Message from "../components/Message";
 import Loader from "../components/Loader";
 import {
-  useGetOrderDetailsQuery,
-  usePayOrderMutation,
-  useGetPaypalClientIdQuery,
   useDeliverOrderMutation,
+  useGetOrderDetailsQuery,
+  useGetPaypalClientIdQuery,
+  usePayOrderMutation,
 } from "../slices/ordersApiSlice";
 
 const OrderScreen = () => {
@@ -44,7 +44,7 @@ const OrderScreen = () => {
         paypalDispatch({
           type: "resetOptions",
           value: {
-            clientId: paypal.clientId,
+            "client-id": paypal.clientId,
             currency: "USD",
           },
         });
@@ -63,19 +63,20 @@ const OrderScreen = () => {
       try {
         await payOrder({ orderId, details });
         refetch();
-        toast.success("Payment Successful");
+        toast.success("Order is paid");
       } catch (err) {
         toast.error(err?.data?.message || err.error);
       }
     });
   }
 
-  async function onApproveTest() {
-    await payOrder({ orderId, details: { payer: {} } });
-    refetch();
+  // TESTING ONLY! REMOVE BEFORE PRODUCTION
+  // async function onApproveTest() {
+  //   await payOrder({ orderId, details: { payer: {} } });
+  //   refetch();
 
-    toast.success("Order is paid");
-  }
+  //   toast.success('Order is paid');
+  // }
 
   function onError(err) {
     toast.error(err.message);
@@ -95,20 +96,15 @@ const OrderScreen = () => {
       });
   }
 
-  const deliverOrderHandler = async () => {
-    try {
-      await deliverOrder(orderId);
-      refetch();
-      toast.success("Order delivered");
-    } catch (err) {
-      toast.error(err?.data?.message || err.message);
-    }
+  const deliverHandler = async () => {
+    await deliverOrder(orderId);
+    refetch();
   };
 
   return isLoading ? (
     <Loader />
   ) : error ? (
-    <Message variant="danger">{error?.data?.message || error.error}</Message>
+    <Message variant="danger">{error.data.message}</Message>
   ) : (
     <>
       <h1>Order {order._id}</h1>
@@ -138,6 +134,7 @@ const OrderScreen = () => {
                 <Message variant="danger">Not Delivered</Message>
               )}
             </ListGroup.Item>
+
             <ListGroup.Item>
               <h2>Payment Method</h2>
               <p>
@@ -150,6 +147,7 @@ const OrderScreen = () => {
                 <Message variant="danger">Not Paid</Message>
               )}
             </ListGroup.Item>
+
             <ListGroup.Item>
               <h2>Order Items</h2>
               {order.orderItems.length === 0 ? (
@@ -213,7 +211,6 @@ const OrderScreen = () => {
                   <Col>${order.totalPrice}</Col>
                 </Row>
               </ListGroup.Item>
-              {/* PAY ORDER PLACEHOLDER */}
               {!order.isPaid && (
                 <ListGroup.Item>
                   {loadingPay && <Loader />}
@@ -222,8 +219,9 @@ const OrderScreen = () => {
                     <Loader />
                   ) : (
                     <div>
+                      {/* THIS BUTTON IS FOR TESTING! REMOVE BEFORE PRODUCTION! */}
                       {/* <Button
-                        style={{ marginBottom: "10px" }}
+                        style={{ marginBottom: '10px' }}
                         onClick={onApproveTest}
                       >
                         Test Pay Order
@@ -251,7 +249,7 @@ const OrderScreen = () => {
                     <Button
                       type="button"
                       className="btn btn-block"
-                      onClick={deliverOrderHandler}
+                      onClick={deliverHandler}
                     >
                       Mark As Delivered
                     </Button>
@@ -264,4 +262,5 @@ const OrderScreen = () => {
     </>
   );
 };
+
 export default OrderScreen;
